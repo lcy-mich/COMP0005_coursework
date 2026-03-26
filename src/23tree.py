@@ -1,5 +1,6 @@
 # made w/ <3 by me
 # might be a little ugly but i like to convince myself its pretty
+# ts took me 3 hours to grind... im either stupid or maybe its cus i shower too often
 
 class multi_key_node:
     
