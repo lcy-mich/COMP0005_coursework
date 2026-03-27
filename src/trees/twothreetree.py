@@ -100,8 +100,8 @@ class multi_key_node:
         return False
 
 class two_three_tree:
-    def __init__(self, root_key : str):
-        self.root : multi_key_node = multi_key_node(parent=None, keys=[root_key], children=None)
+    def __init__(self, root_key : str | None):
+        self.root = multi_key_node(parent=None, keys=[root_key], children=None) if root_key else None
         # self.mem = {}
 
     # def memoize(self, f):
@@ -181,6 +181,10 @@ class two_three_tree:
         #       if you reach the root and it's a 4-node, split into 3 2-nodes
         #          
 
+        if self.root == None:
+            self.root = multi_key_node(parent=None, keys=[newKey], children=None)
+            return
+
         lastNode : multi_key_node = self.get(newKey, returnLastFound = True) # type: ignore
         assert lastNode #should always exist
 
@@ -223,29 +227,3 @@ class two_three_tree:
         
 
 
-
-tree = two_three_tree("E")
-
-
-tree.put("J")
-tree.put("A")
-tree.put("C")
-tree.put("H")
-tree.put("L")
-tree.put("B")
-
-print("+",tree.root.keys)
-if tree.root.children:
-    for node in tree.root.children:
-        print("-")
-        print(node.keys)
-        print("-")
-        if node.children:
-            for childnode in node.children:
-                print("--")
-                print(childnode.keys)
-                print("--")
-
-
-
-print(tree.get("A"))
