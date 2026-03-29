@@ -1,5 +1,8 @@
 # thanks to Ricky Zhang for making this
 # all i changed was insertElement -> put and searchElement -> get
+# and removed AbstractSearchInterface
+
+#nevermind this was for the jupyter notebook file
 
 class LLRBBSTNode:
     def __init__(self, element):
@@ -9,7 +12,7 @@ class LLRBBSTNode:
         self.right = None
 
 
-class LLRBBST(AbstractSearchInterface):
+class LLRBBST:
     def __init__(self):
         self.root = None
 

@@ -100,7 +100,7 @@ class multi_key_node:
         return False
 
 class two_three_tree:
-    def __init__(self, root_key : str | None):
+    def __init__(self, root_key : str | None = None):
         self.root = multi_key_node(parent=None, keys=[root_key], children=None) if root_key else None
         # self.mem = {}
 
@@ -111,36 +111,36 @@ class two_three_tree:
     #         return self.mem[val]
     #     return inner
 
-    def get(self, needle : str , node : multi_key_node | None = None, returnLastFound : bool = False) -> multi_key_node | None:
+    def get(self, needle : str , node : multi_key_node | None = None, _returnLastFound : bool = False) -> multi_key_node | None:
         # compare search key against those in node
         # find interval containing search key
         # follow associated link (recursively)
 
         if not node: # initial setup to start search from root
-            return self.get(needle, self.root, returnLastFound) 
+            return self.get(needle, self.root, _returnLastFound) 
         
         if node.hasKey(needle): # check if node is correct
-            return node
+            return node if _returnLastFound else True
         
         if not node.hasChildren(): # check children exist
-            return node if returnLastFound else None
+            return node if _returnLastFound else False
 
         if node.isTwoNode():
             if needle < node.getKey():
-                return self.get(needle, node.getLeft(), returnLastFound)
+                return self.get(needle, node.getLeft(), _returnLastFound)
             else:
-                return self.get(needle, node.getRight(), returnLastFound)
+                return self.get(needle, node.getRight(), _returnLastFound)
             
         if node.isThreeNode():            
             leftKey = node.getLeftKey()
             rightKey = node.getRightKey()
             
             if needle < leftKey:
-                return self.get(needle, node.getLeft(), returnLastFound)
+                return self.get(needle, node.getLeft(), _returnLastFound)
             if needle > rightKey:
-                return self.get(needle, node.getRight(), returnLastFound)
+                return self.get(needle, node.getRight(), _returnLastFound)
             else:
-                return self.get(needle, node.getMid(), returnLastFound)
+                return self.get(needle, node.getMid(), _returnLastFound)
             
     def splitChildren(self, node : multi_key_node, parent : multi_key_node, index : int) -> multi_key_node:
         assert node.isTempFourNode()
@@ -185,7 +185,7 @@ class two_three_tree:
             self.root = multi_key_node(parent=None, keys=[newKey], children=None)
             return
 
-        lastNode : multi_key_node = self.get(newKey, returnLastFound = True) # type: ignore
+        lastNode : multi_key_node = self.get(newKey, _returnLastFound = True) # type: ignore
         assert lastNode #should always exist
 
         if lastNode.hasKey(newKey):
